@@ -1,20 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.sof2043.ui;
 
 import com.mycompany.sof2043.dao.StudentDao;
 import com.mycompany.sof2043.entity.Student;
-import com.mycompany.sof2043.util.XJdbc;
-import com.mycompany.sof2043.util.XQuery;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -36,6 +25,12 @@ public class StudentJFrame extends javax.swing.JFrame {
         initComponents();
 
         defaultTableModel = new DefaultTableModel();
+        defaultTableModel.addColumn("Id");
+        defaultTableModel.addColumn("Name");
+        defaultTableModel.addColumn("Email");
+        defaultTableModel.addColumn("Phone");
+        jTable1.setModel(defaultTableModel);
+
         studentDao = new StudentDao();
 
         fillTable();
@@ -43,12 +38,8 @@ public class StudentJFrame extends javax.swing.JFrame {
     }
 
     private void fillTable() throws SQLException {
-        jTable1.setModel(defaultTableModel);
 
-        defaultTableModel.addColumn("Id");
-        defaultTableModel.addColumn("Name");
-        defaultTableModel.addColumn("Email");
-        defaultTableModel.addColumn("Phone");
+        defaultTableModel.setRowCount(0);
 
         List<Student> students = studentDao.getAll();
         students.stream().forEach(System.out::println);
@@ -61,6 +52,26 @@ public class StudentJFrame extends javax.swing.JFrame {
                 student.getPhone()
             });
         }
+    }
+
+    private void clearForm() {
+
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+
+    }
+
+    private Student readFromForm() {
+
+        // read data from form
+        var id = Integer.parseInt(jTextField1.getText());
+        var name = jTextField2.getText();
+        var email = jTextField3.getText();
+        var phone = jTextField4.getText();
+
+        return new Student(id, name, email, phone);
     }
 
     /**
@@ -172,49 +183,18 @@ public class StudentJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        // read data from form
-        var id = Integer.parseInt(jTextField1.getText());
-        var name = jTextField2.getText();
-        var email = jTextField3.getText();
-        var phone = jTextField4.getText();
-
-        // insert into db
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
         try {
+            // insert into db
+            studentDao.create(readFromForm());
 
-            connection = XJdbc.openConnection();
-            System.out.println("Connected...");
+            clearForm();
+            fillTable();
 
-            String sql = """
-                            INSERT INTO students(id, name, email, phone)
-                            VALUES(?, ?, ?, ?);
-                         """;
-
-            preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, email);
-            preparedStatement.setString(4, phone);
-
-            preparedStatement.execute();
-
-            defaultTableModel.fireTableDataChanged();
-
-            System.out.println("done...");
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        } finally {
-            // close connection, prepatedStatement, resulSet
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
