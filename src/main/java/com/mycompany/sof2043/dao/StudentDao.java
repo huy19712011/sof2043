@@ -15,6 +15,8 @@ public class StudentDao {
 
     String FIND_ALL_SQL = "SELECT * FROM students;";
     String CREATE_SQL = "INSERT INTO students(id, name, email, phone) VALUES(?, ?, ?, ?);";
+    String UPDATE_SQL = "UPDATE students SET name = ?, email = ?, phone = ? WHERE id = ?";
+    String DELETE_SQL = "DELETE FROM students WHERE id = ?";
 
     public List<Student> getAll() throws SQLException {
 
@@ -34,4 +36,30 @@ public class StudentDao {
 
         return e;
     }
+
+    public Student update(Student e) throws SQLException {
+
+        Object[] values = {
+            e.getName(),
+            e.getEmail(),
+            e.getPhone(),
+            e.getId()
+        };
+
+        XJdbc.executeUpdate(UPDATE_SQL, values);
+
+        return e;
+    }
+
+    public Student delete(Student e) throws SQLException {
+
+        Object[] values = {
+            e.getId()
+        };
+
+        XJdbc.executeUpdate(DELETE_SQL, values);
+
+        return e;
+    }
+
 }
