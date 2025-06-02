@@ -18,12 +18,12 @@ public class StudentDao {
     String UPDATE_SQL = "UPDATE students SET name = ?, email = ?, phone = ? WHERE id = ?";
     String DELETE_SQL = "DELETE FROM students WHERE id = ?";
 
-    public List<Student> getAll() throws SQLException {
+    public List<Student> getAll()  {
 
         return XQuery.getBeanList(Student.class, FIND_ALL_SQL);
     }
 
-    public Student create(Student e) throws SQLException {
+    public Student create(Student e)  {
 
         Object[] values = {
             e.getId(),
@@ -37,7 +37,7 @@ public class StudentDao {
         return e;
     }
 
-    public Student update(Student e) throws SQLException {
+    public Student update(Student e)  {
 
         Object[] values = {
             e.getName(),
@@ -51,7 +51,7 @@ public class StudentDao {
         return e;
     }
 
-    public Student delete(Student e) throws SQLException {
+    public Student delete(Student e)  {
 
         Object[] values = {
             e.getId()

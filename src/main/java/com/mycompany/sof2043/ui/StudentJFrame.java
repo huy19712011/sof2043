@@ -37,7 +37,7 @@ public class StudentJFrame extends javax.swing.JFrame {
 
     }
 
-    private void fillTable() throws SQLException {
+    private void fillTable()  {
 
         defaultTableModel.setRowCount(0);
 
@@ -206,16 +206,14 @@ public class StudentJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
+
             // insert into db
             studentDao.create(readFromForm());
 
             clearForm();
             fillTable();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(StudentJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -232,16 +230,14 @@ public class StudentJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Update button
-        try {
+
             // update db
             studentDao.update(readFromForm());
 
             clearForm();
             fillTable();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(StudentJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -249,16 +245,13 @@ public class StudentJFrame extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // DELETE button
 
-        try {
             // update db
             studentDao.delete(readFromForm());
 
             clearForm();
             fillTable();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(StudentJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
